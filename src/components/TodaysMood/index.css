@@ -1,0 +1,174 @@
+
+
+/* Styles for Today's Mood Container */
+
+.todays-mood-container {
+    max-width: 1170px;
+    width: 100%;
+    display: flex;
+    margin-top: 64px;
+    margin-bottom: 32px;
+}
+
+.todays-mood-main-aside {
+    width: 40%;
+}
+
+.todays-mood-main, .todays-mood-sleep, .todays-mood-reflection {
+    background-color: var(--neutral-0);
+    border-radius: 16px;
+    text-align: left;
+}
+
+.todays-mood-main {
+    width: 60%;
+    padding: 32px;
+    margin-right: 32px;
+    overflow: hidden;
+}
+
+.todays-mood-main h2{
+    font-size: 32px;
+    line-height: 140%;
+    letter-spacing: -0.3px;
+    color: var(--neutral-600);
+}
+
+.todays-mood-main span{
+    display: block;
+    font-size: 40px;
+    font-weight: bold;
+    line-height: 120%;
+    letter-spacing: -0.3px;
+    color: var(--neutral-900);
+}
+
+.todays-mood-main-footer {
+    position: relative;
+}
+
+.todays-mood-main-footer div {
+    width: 246px;
+    position: absolute;
+    left: 0;
+    bottom: -190px;
+}
+
+.todays-mood-main .mood-image{
+    position: absolute;
+    right: 0;
+    top: -90px;
+    width: 319.99px;
+    height: 319.99px;
+}
+
+.todays-mood-quote {
+    font-size: 18px;
+    line-height: 130%;
+    letter-spacing: 0px;
+    color: var(--neutral-900);
+    font-style: italic;
+}
+
+.todays-mood-sleep div, .todays-mood-reflection div{
+    display: flex;
+}
+
+.todays-mood-sleep div img, .todays-mood-reflection div img{
+    margin-right: 12px;
+}
+
+.todays-mood-sleep {
+    margin-bottom: 20px;
+    padding: 20px;
+}
+
+.todays-mood-reflection {
+    height: 197px;
+    position: relative;
+    padding: 20px;
+}
+
+.reflection {
+    font-size: 18px;
+    line-height: 120%;
+    letter-spacing: 0px;
+    color: var(--neutral-900);
+}
+
+.feelings {
+    position: absolute;
+    bottom: 10px;
+    font-size: 18px;
+    line-height: 120%;
+    letter-spacing: 0px;
+    font-style: italic;
+    color: var(--neutral-600);
+}
+
+.todays-mood-sleep-hours {
+    color: var(--neutral-900);
+    font-weight: 900;
+    font-size: 32px;
+    line-height: 120%;
+    letter-spacing: -0.03px;
+}
+
+/* Media queries */
+
+
+@media (max-width: 1070px) {
+    .todays-mood-container {
+        flex-direction: column;
+    }
+
+    .todays-mood-main{
+        width: 90%;
+        height: 320px;
+    }
+
+    .todays-mood-main-aside {
+        width: 95%;
+        min-height: 320px;
+
+    }
+
+    .todays-mood-sleep, .todays-mood-reflection {
+        width: 100%;
+        margin: 20px auto;
+    }
+
+}
+
+
+
+@media (max-width: 900px) {
+    .todays-mood-container {
+        flex-direction: column;
+    }
+}
+
+
+@media (max-width: 680px) {
+    .todays-mood-main {
+        height: auto;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+
+    .todays-mood-main .mood-image{
+        position: relative;
+        top: -90px;
+        width: 200px;
+        height: 200px;
+    }
+
+    .todays-mood-main-footer div {
+        flex-direction: column;
+        top: 235px;
+        position: relative;
+    }
+}

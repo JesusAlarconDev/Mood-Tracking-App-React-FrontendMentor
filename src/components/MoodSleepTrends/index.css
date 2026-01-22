@@ -1,0 +1,172 @@
+
+/* Styles for Mood-Sleep Trends */
+
+.mood-sleep-trends-container {
+    background: white;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+    width: 65%;
+}
+
+.mood-sleep-trends-container h2 {
+    color: var(--neutral-900);
+    text-align: left;
+    font-size: 32px;
+    line-height: 140%;
+    letter-spacing: -0.3px;
+}
+
+.table-layout {
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    height: 300px;
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+
+.y-labels {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: right;
+    color: var(--neutral-600);
+    font-size: 12px;
+    line-height: 110%;
+    letter-spacing: 0px;
+    margin-right: 20px;
+    padding-bottom: 30px;
+}
+
+.y-labels div img {
+    width: 10px;
+    height: 10px;
+}
+
+.graph-area {
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-around;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 40px;
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+.graph-background-lines {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 30px;
+    z-index: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.line {
+    border-top: 1px solid #f0f0f0;
+    width: 100%;
+    height: 1px;
+}
+
+.bar-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 1;
+    height: 100%;
+    justify-content: flex-end;
+    width: 50px; 
+    margin-right: 15px;
+    position: relative; 
+}
+
+.bar {
+    width: 50px; 
+    border-radius: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 10px;
+    transition: height 0.5s ease;
+    margin: 0 auto;
+    margin-bottom: -9px;
+}
+
+.icon {
+    font-size: 1.5rem;
+    background: white;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.date {
+    position: absolute;
+    bottom: -40px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    color: var(--neutral-600);
+    font-size: 12px;
+    line-height: 1.2;
+    white-space: nowrap;
+    transform: translateX(0);
+    margin: 0;
+}
+.date span {
+    display: block;
+    color: var(--neutral-900);
+    font-size: 13px;
+    line-height: 100%;
+    letter-spacing: 0px;
+    font-weight: bold;
+}
+
+.h-100 {
+    height: 100%;
+}
+.h-75 {
+    height: 75%;
+}
+.h-50 {
+    height: 50%;
+}
+.h-25 {
+    height: 25%;
+}
+.h-10 {
+    height: 15%;
+}
+
+.bar.very-happy{
+    background-color: var(--amber-300);
+}
+.bar.happy{
+    background-color: var(--green-300);
+}
+.bar.neutral{
+    background-color: var(--blue-300);
+}
+.bar.sad{
+    background-color: var(--indigo-200);
+}
+.bar.very-sad{
+    background-color: var(--red-300);
+}
+
+
+/* Media queries */
+
+@media (max-width: 900px) {
+    .mood-sleep-trends-container {
+        width: 89%;
+        margin: 20px auto;
+    }
+}

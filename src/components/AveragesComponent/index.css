@@ -1,0 +1,71 @@
+
+/* Styles for average Mood */
+.average-container {
+    background-color: var(--neutral-0);
+    border-radius: 16px;
+    padding: 24px;
+    text-align: left;
+    width: 35%;
+}
+
+.average-mood.very-happy{
+    background-color: var(--amber-300);
+}
+.average-mood.happy{
+    background-color: var(--green-300);
+}
+.average-mood.neutral{
+    background-color: var(--blue-300);
+}
+.average-mood.sad{
+    background-color: var(--indigo-200);
+}
+.average-mood.very-sad{
+    background-color: var(--red-300);
+}
+
+.average-mood img, .average-sleep img {
+    margin-right: 16px;
+    vertical-align: middle;
+}
+
+.average-container .no-data {
+    background-color: var(--color-blue-100);
+    color: var(--neutral-900);
+}
+
+.average-container h4 {
+    font-size: 24px;
+    line-height: 140%;
+    letter-spacing: 0px;
+    margin-bottom: 20px;
+}
+
+.average-mood, .average-sleep {
+    background-image: url('../assets/images/bg-pattern-averages.svg');
+    background-repeat: no-repeat;
+    background-position: 250px;
+    height: 150px;
+}
+
+.average-mood {
+    background-color: var(--color-blue-300);
+    color: var(--neutral-900); 
+    border-radius: 20px;
+    padding: 20px;
+}
+
+.average-sleep {
+    background-color: var(--color-blue-600);
+    color: var(--neutral-0);
+    border-radius: 20px;
+    padding: 20px;
+}
+
+/* Media queries */
+
+@media (max-width: 900px) {
+    .average-container {
+        width: 95%;
+    }
+}
