@@ -33,6 +33,73 @@
 .head-arrow{
     width: 10.2px;
     cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.head-arrow-rotated {
+    transform: rotate(180deg);
+}
+
+.head-user {
+    position: relative;
+}
+
+.user-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: var(--neutral-0);
+    border-radius: 10px;
+    padding: 16px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+    z-index: 1000;
+    text-align: left;
+}
+
+.user-menu-name {
+    font-size: 18px;
+    line-height: 120%;
+    letter-spacing: 0;
+}
+
+.user-menu-email, .user-menu-settings, .user-menu-logout {
+    font-size: 15px;
+    line-height: 140%;
+    letter-spacing: -0.3px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.user-menu-settings img, .user-menu-logout img {
+    width: 18px;
+    height: 18px;
+}
+
+.user-menu-email {
+    color: var(--neutral-300);
+    border-bottom: 1px solid var(--color-blue-100);
+    padding-bottom: 8px;
+}
+
+.user-menu-open {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.user-menu p {
+    margin: 8px 0;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.user-menu p:hover {
+    color: var(--color-blue-600);
 }
 
 /* Header styles */

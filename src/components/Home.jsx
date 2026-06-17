@@ -8,30 +8,63 @@ import logo from '../assets/images/logo.svg'
 import avatar from '../assets/images/avatar-lisa.jpg' /* Temporalmente hasta por una imagen por defecto */
 import defaultProfile from '../assets/images/avatar-placeholder.svg' /* Imagen de Perfil Por Defecto */
 import dropDownArrow from '../assets/images/icon-dropdown-arrow.svg';
+import settingsIcon from '../assets/images/icon-settings.svg';
+import logoutIcon from '../assets/images/icon-logout.svg';
 import { TodaysMood } from './TodaysMood/index';
 import { INITIAL_MOOD_REGISTERS } from '../constants/mockData';
+import { useAuth } from '../context/AuthContext';
 
 export const Home = () => {
     
     const [data, setData] = useState(null);
-    const [user, setUser] = useState({name: "Lisa Mairi"});
-
     const [moodRegisters, setMoodRegisters] = useState(INITIAL_MOOD_REGISTERS);
 
-    const {name} = user;
+    const { user, logout } = useAuth();
+    const name = user?.name || "User";
+    const email = user?.email || "";
 
     useEffect(() => {
-        const dataFromLS = localStorage.getItem("moodRegisters");
-        if (dataFromLS) {
-            setMoodRegisters(JSON.parse(dataFromLS));
-        } else {
-            setMoodRegisters(INITIAL_MOOD_REGISTERS);
-        }
+        const fetchMoodRegisters = async () => {
+            try {
+                const jwt_token = localStorage.getItem('userToken');
+                if (!jwt_token) {
+                    throw new Error('No autorizado. Por favor inicia sesión.');
+                }
+
+                const url = '/api/moods';
+                const response = await fetch(url, {
+                    headers: {
+                        'Authorization': `Bearer ${jwt_token}`
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Error al cargar los registros de humor');
+                }
+
+                const data = await response.json();
+                setMoodRegisters(Array.isArray(data.moods) ? data.moods : []);
+            } catch (err) {
+                console.error(err.message);
+            }
+            //  finally {
+            //     setLoading(false);
+            // }
+        };
+
+        fetchMoodRegisters();
     }, []);
 
     useEffect(() => {
-        if(moodRegisters.length > 0 && moodRegisters[moodRegisters.length - 1].date === new Date().toISOString().split('T')[0]){
-            setData(moodRegisters[moodRegisters.length - 1]);
+        if(moodRegisters.length > 0){
+            const lastRegister = moodRegisters[moodRegisters.length - 1];
+            const today = new Date().toISOString().split('T')[0];
+            const registerDate = new Date(lastRegister.createdAt).toISOString().split('T')[0];
+            if(registerDate === today){
+                setData(lastRegister);
+            } else {
+                setData(null);
+            }
         } else {
             setData(null);
         }
@@ -44,6 +77,11 @@ export const Home = () => {
 
     const closeModal = () => setShowModal(false);
 
+    // Logica del User Menu
+    const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+
+    const toggleUserMenu = () => setIsUserMenuOpen(!isUserMenuOpen);
+
     
     // TODO: Que el dia de la semana venga en Cardinal, es decir con el TH o RD, o lo que venga
     const date = new Date();
@@ -51,6 +89,11 @@ export const Home = () => {
         const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
         return date.toLocaleDateString('en-US', options);
     }
+
+    const handleLogout = () => {
+        logout();
+        window.location.href = '/';
+    };
 
   return (
     <>
@@ -64,7 +107,19 @@ export const Home = () => {
                     {/* Comprobacion de si hay una imagen de perfil muestra la imagen y si no el default */}
                     {/* <img src={avatar} alt="Avatar" /> */}
                     <img src={defaultProfile} alt="Avatar" className='head-avatar' />
-                    <img src={dropDownArrow} alt="Arrow" className='head-arrow' />
+                    <img 
+                        src={dropDownArrow} 
+                        alt="Arrow" 
+                        className={`head-arrow ${isUserMenuOpen ? 'head-arrow-rotated' : ''}`} 
+                        onClick={toggleUserMenu}
+                    />
+
+                    <div className={`user-menu ${isUserMenuOpen ? 'user-menu-open' : ''}`}>
+                        <p className='user-menu-name'>{name}</p>
+                        <p className='user-menu-email'>{email}</p>
+                        <p className='user-menu-settings'><img src={settingsIcon} alt="Settings" /> Settings</p>
+                        <p className='user-menu-logout' onClick={() => handleLogout()}><img src={logoutIcon} alt="Logout" /> Logout</p>
+                    </div>
                 </div>
             </div>
             <h2 className='header-greeting'> Hello, {name}!</h2>
