@@ -6,8 +6,8 @@ import verySad from '../../assets/images/icon-very-sad-color.svg'
 import { useState } from 'react'
 import './index.css';
 
-const MoodForm = ({showModal, moodRegisters, setMoodRegisters, closeModal}) => {
-    const initialState = {todaysMood: "", feelings: [], aboutYourDay: "", sleepHours: "", date: new Date().toISOString().split('T')[0]};
+const MoodForm = ({showModal, closeModal}) => {
+    const initialState = {todaysMood: "", feelings: [], aboutYourDay: "", sleepHours: "", createdAt: new Date().toISOString()};
 
     const [currentStep, setCurrentStep] = useState(1);
     const [formData, setFormData] = useState(initialState);
@@ -92,7 +92,7 @@ const MoodForm = ({showModal, moodRegisters, setMoodRegisters, closeModal}) => {
         setCurrentStep(prevStep => prevStep + 1);
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         const errors = validateStep(4, formData);
@@ -102,9 +102,30 @@ const MoodForm = ({showModal, moodRegisters, setMoodRegisters, closeModal}) => {
         }
         setStepErrors([]);
 
-        const updatedRegisters = [...moodRegisters, formData];
-        setMoodRegisters(updatedRegisters);
-        localStorage.setItem("moodRegisters", JSON.stringify(updatedRegisters));
+        // const updatedRegisters = [...moodRegisters, formData];
+        // setMoodRegisters(updatedRegisters);
+        // localStorage.setItem("moodRegisters", JSON.stringify(updatedRegisters));
+
+        try {
+            const jwt_token = localStorage.getItem('userToken');
+            if (!jwt_token) {
+                throw new Error('No autorizado. Por favor inicia sesión.');
+            }
+            const url = '/api/moods';
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${jwt_token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            });
+            if (!response.ok) {
+                throw new Error('Error al crear el registro');
+            }
+        } catch (err) {
+            console.error(err.message);
+        }
 
         setCurrentStep(1); 
         setFormData(initialState); 

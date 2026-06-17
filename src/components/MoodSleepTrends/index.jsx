@@ -46,7 +46,7 @@ const MoodSleepTrends = ({moodRegisters}) => {
                           <div className={`bar ${getMoodColor(register.todaysMood)} ${getSleepHeight(register.sleepHours)}`}>
                             <div className="icon"><MoodImageWhite mood={register.todaysMood} size={38} /></div>
                           </div>
-                          <div className="date">{getMonth(register.date)} <span>{getDay(register.date)}</span></div>
+                          <div className="date">{getMonth(register.createdAt)} <span>{getDay(register.createdAt)}</span></div>
                         </div>
                     ))
                 }
