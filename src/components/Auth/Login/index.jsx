@@ -40,9 +40,10 @@ const Login = () => {
     
             const data = await response.json();
             const jwtToken = data.token; 
+            const userInfo = data.user;
 
             if (jwtToken) {
-                loginWithToken(jwtToken);
+                loginWithToken(jwtToken, userInfo);
                 navigate('/');
             } else {
                 throw new Error('El servidor no retornó un token.');

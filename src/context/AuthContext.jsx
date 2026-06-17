@@ -28,6 +28,10 @@ function isJwtValid(token) {
 function AuthProvider ({children}) {
     const navigate = useNavigate();
     const [token, setToken] = useState(() => localStorage.getItem('userToken'));
+    const [user, setUser] = useState(() => {
+        const savedUser = localStorage.getItem('userInfo');
+        return savedUser ? JSON.parse(savedUser) : null;
+    });
 
     useEffect(() => {
         const onStorage = (e) => {
@@ -41,20 +45,27 @@ function AuthProvider ({children}) {
 
     const isAuthenticated = useMemo(() => isJwtValid(token), [token]);
 
-    const loginWithToken = (newToken) => {
+    const loginWithToken = (newToken, userInfo = null) => {
         localStorage.setItem('userToken', newToken);
         setToken(newToken);
+        if (userInfo) {
+            localStorage.setItem('userInfo', JSON.stringify(userInfo));
+            setUser(userInfo);
+        }
     };
 
     const logout = () => {
         localStorage.removeItem('userToken');
+        localStorage.removeItem('userInfo');
         setToken(null);
+        setUser(null);
         navigate('/login', { replace: true });
     };
 
     const auth = {
         isAuthenticated,
         token,
+        user,
         loginWithToken,
         logout,
     };
