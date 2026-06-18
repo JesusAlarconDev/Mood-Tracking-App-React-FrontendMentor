@@ -4,9 +4,8 @@ import AveragesComponent from './AveragesComponent/index';
 import MoodSleepTrends from './MoodSleepTrends/index';
 import MoodForm  from './MoodForm/index';
 
-import logo from '../assets/images/logo.svg'
-import avatar from '../assets/images/avatar-lisa.jpg' /* Temporalmente hasta por una imagen por defecto */
-import defaultProfile from '../assets/images/avatar-placeholder.svg' /* Imagen de Perfil Por Defecto */
+import logo from '../assets/images/logo.svg';
+import defaultProfile from '../assets/images/avatar-placeholder.svg';
 import dropDownArrow from '../assets/images/icon-dropdown-arrow.svg';
 import settingsIcon from '../assets/images/icon-settings.svg';
 import logoutIcon from '../assets/images/icon-logout.svg';
@@ -23,6 +22,7 @@ export const Home = () => {
     const { user, logout } = useAuth();
     const name = user?.name || "User";
     const email = user?.email || "";
+    const profilePicture = user?.profilePicture || defaultProfile;
 
     useEffect(() => {
         const fetchMoodRegisters = async () => {
@@ -109,10 +109,7 @@ export const Home = () => {
                     <img src={logo} alt="Logo" />
                 </div>
                 <div className='head-user'>
-                    {/* User */}
-                    {/* Comprobacion de si hay una imagen de perfil muestra la imagen y si no el default */}
-                    {/* <img src={avatar} alt="Avatar" /> */}
-                    <img src={defaultProfile} alt="Avatar" className='head-avatar' />
+                    <img src={profilePicture ? profilePicture : defaultProfile} alt="Avatar" className='head-avatar' />
                     <img 
                         src={dropDownArrow} 
                         alt="Arrow" 
@@ -132,9 +129,6 @@ export const Home = () => {
         
             <h2 className='header-question'>How are you feeling today?</h2> 
             <p className='header-date'>{formatDate(date)}</p>
-
-            {/* Para desarrollo tendre el boton siempre operativo */}
-            {/* <button className='header-button' onClick={() => openModal()}>Log today's mood</button> */}
 
             {/* Si ya ha cargado su estado de animo de hoy */}
             {data? (
