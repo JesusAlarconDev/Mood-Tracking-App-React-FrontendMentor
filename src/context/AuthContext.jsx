@@ -62,12 +62,18 @@ function AuthProvider ({children}) {
         navigate('/login', { replace: true });
     };
 
+    const updateUser = (updatedUserInfo) => {
+        localStorage.setItem('userInfo', JSON.stringify(updatedUserInfo));
+        setUser(updatedUserInfo);
+    };
+
     const auth = {
         isAuthenticated,
         token,
         user,
         loginWithToken,
         logout,
+        updateUser,
     };
 
     return (
