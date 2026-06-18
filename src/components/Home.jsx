@@ -13,6 +13,7 @@ import logoutIcon from '../assets/images/icon-logout.svg';
 import { TodaysMood } from './TodaysMood/index';
 import { INITIAL_MOOD_REGISTERS } from '../constants/mockData';
 import { useAuth } from '../context/AuthContext';
+import SettingsModal from './SettingsModal';
 
 export const Home = () => {
     
@@ -95,6 +96,11 @@ export const Home = () => {
         window.location.href = '/';
     };
 
+    // Logica del Settings Modal
+    const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+    const openSettings = () => setIsSettingsOpen(true);
+    const closeSettings = () => setIsSettingsOpen(false);
+
   return (
     <>
         <header>
@@ -117,7 +123,7 @@ export const Home = () => {
                     <div className={`user-menu ${isUserMenuOpen ? 'user-menu-open' : ''}`}>
                         <p className='user-menu-name'>{name}</p>
                         <p className='user-menu-email'>{email}</p>
-                        <p className='user-menu-settings'><img src={settingsIcon} alt="Settings" /> Settings</p>
+                        <p className='user-menu-settings' onClick={() => openSettings()}><img src={settingsIcon} alt="Settings"/> Settings</p>
                         <p className='user-menu-logout' onClick={() => handleLogout()}><img src={logoutIcon} alt="Logout" /> Logout</p>
                     </div>
                 </div>
@@ -144,6 +150,7 @@ export const Home = () => {
             <MoodSleepTrends moodRegisters={moodRegisters} />
         </main>
 
+        <SettingsModal isOpen={isSettingsOpen} onClose={closeSettings} />
         <MoodForm showModal={showModal} setData={setData} moodRegisters={moodRegisters} setMoodRegisters={setMoodRegisters} closeModal={closeModal} />
   
     </>
