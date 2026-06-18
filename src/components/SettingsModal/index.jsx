@@ -4,21 +4,89 @@ import defaultProfile from '../../assets/images/avatar-placeholder.svg'
 import './index.css'
 
 const SettingsModal = ({isOpen, onClose}) => {
-  const {user} = useAuth();
-  const {name: userName, email: userEmail} = user || {};
+  const {user, updateUser} = useAuth();
+  const {name: userName, email: userEmail, profilePicture} = user || {};
 
   const [formData, setFormData] = useState({
     name: userName || '',
     email: userEmail || '',
-    profileImage: defaultProfile
+    profileImage: profilePicture || defaultProfile,
+    profilePictureFile: null
   })
 
-  const {name, email, profileImage} = formData;
+  const {name, email, profileImage, profilePictureFile} = formData;
 
-  const handleSubmit = (e) => {
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    // Validar tamaño (250KB max)
+    if (file.size > 250 * 1024) {
+      alert('La imagen excede el tamaño máximo de 250KB');
+      return;
+    }
+
+    if (!['image/png', 'image/jpeg', 'image/jpg'].includes(file.type)) {
+      alert('Solo se permiten archivos PNG o JPEG');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setFormData({
+        ...formData,
+        profileImage: reader.result,
+        profilePictureFile: file
+      });
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // TODO: Implement form submission when Api Backend is Ready
-    console.log('Form submitted:', formData);
+
+    try {
+      const jwt_token = localStorage.getItem('userToken');
+      if (!jwt_token) {
+          throw new Error('No autorizado. Por favor inicia sesión.');
+      }
+      
+      const formDataToSend = new FormData();
+      formDataToSend.append('name', name);
+      formDataToSend.append('email', email);
+
+      if (profilePictureFile) {
+        formDataToSend.append('profilePicture', profilePictureFile);
+      }
+    
+      const response = await fetch('/api/users', {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${jwt_token}`
+        },
+        body: formDataToSend
+      });
+      
+      if (!response.ok) {
+        throw new Error('Error al actualizar el perfil');
+      }
+      
+      const result = await response.json();
+      
+      const updatedUser = {
+        ...user,
+        name: name,
+        email: email,
+        profilePicture: result.data?.profilePicture || profilePicture
+      };
+      updateUser(updatedUser);
+      
+      onClose();
+
+    } catch (error) {
+      console.error('Error updating profile:', error);
+      alert('Error al actualizar el perfil. Por favor intenta nuevamente.');
+    }
   };
 
   if (!isOpen) return null; 
@@ -31,7 +99,7 @@ const SettingsModal = ({isOpen, onClose}) => {
 
         <span onClick={onClose} className='settings-close'>x</span>
 
-        <form onSubmit={(e) => handleSubmit(e)}>
+        <form onSubmit={(e) => handleSubmit(e)} encType="multipart/form-data">
           <div className='settings-form-group'>
               <label htmlFor="name">Name</label>
               <input 
@@ -55,11 +123,24 @@ const SettingsModal = ({isOpen, onClose}) => {
               />
           </div>
           <div className='settings-profile-container'>
-              <img src={profileImage} alt="profile image" />
+              <img src={profileImage ? profileImage : defaultProfile} alt="profile image" />
               <div className='settings-upload-info'>
                   <label htmlFor="name" className='auth-form-label'>Upload Image</label>
                   <p>Max 250KB, PNG o JPEG</p>
-                  <button type="button">Upload</button>
+                  <input 
+                    type="file" 
+                    accept="image/png, image/jpeg" 
+                    name="profilePicture"
+                    onChange={handleImageChange}
+                    style={{ display: 'none' }}
+                    id="profilePictureInput"
+                  />
+                  <button 
+                    type="button" 
+                    onClick={() => document.getElementById('profilePictureInput').click()}
+                  >
+                    Upload
+                  </button>
               </div>
           </div>
 
