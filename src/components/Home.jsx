@@ -15,7 +15,6 @@ import { useAuth } from '../context/AuthContext';
 import SettingsModal from './SettingsModal';
 
 export const Home = () => {
-    
     const [data, setData] = useState(null);
     const [moodRegisters, setMoodRegisters] = useState(INITIAL_MOOD_REGISTERS);
 

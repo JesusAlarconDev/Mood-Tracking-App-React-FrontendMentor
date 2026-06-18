@@ -13,12 +13,39 @@ const Register = () => {
         email: "",
         password: "",
         name: "",
+        profileImage: defaultProfile,
+        profilePictureFile: null
     });
-    const {email, password, name} = formData;
+    const {email, password, name, profileImage, profilePictureFile} = formData;
     const navigate = useNavigate();
     const { loginWithToken } = useAuth();   
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
+
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        if (file.size > 250 * 1024) {
+            setError('La imagen excede el tamaño máximo de 250KB');
+            return;
+        }
+
+        if (!['image/png', 'image/jpeg', 'image/jpg'].includes(file.type)) {
+            setError('Solo se permiten archivos PNG o JPEG');
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            setFormData({
+                ...formData,
+                profileImage: reader.result,
+                profilePictureFile: file
+            });
+        };
+        reader.readAsDataURL(file);
+    };
 
     const handleNextStep = (e) => {
         e.preventDefault();
@@ -44,16 +71,18 @@ const Register = () => {
         const REGISTER_URL = '/api/users/register'; 
 
         try {
+            const formDataToSend = new FormData();
+            formDataToSend.append('email', email);
+            formDataToSend.append('password', password);
+            formDataToSend.append('name', name);
+
+            if (profilePictureFile) {
+                formDataToSend.append('profilePicture', profilePictureFile);
+            }
+
             const response = await fetch(REGISTER_URL, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({  
-                    email: email,
-                    password: password,
-                    name: name,
-                }),
+                body: formDataToSend
             });
     
             if (!response.ok) {
@@ -138,11 +167,24 @@ const Register = () => {
                                     />
                             </div>
                             <div className='auth-form-group profile-container'>
-                                <img src={defaultProfile} alt="profile image" />
-                                <div>
+                                <img src={profileImage ? profileImage : defaultProfile} alt="profile image" />
+                                <div className='auth-upload-info'>
                                     <label htmlFor="name" className='auth-form-label'>Upload Image</label>
                                     <p>Max 250KB, PNG o JPEG</p>
-                                    <button type="button">Upload</button>
+                                    <input 
+                                        type="file" 
+                                        accept="image/png, image/jpeg" 
+                                        name="profilePicture"
+                                        onChange={handleImageChange}
+                                        style={{ display: 'none' }}
+                                        id="profilePictureInput"
+                                    />
+                                    <button 
+                                        type="button" 
+                                        onClick={() => document.getElementById('profilePictureInput').click()}
+                                    >
+                                        Upload
+                                    </button>
                                 </div>
                             </div>
                             <button type='submit' className='auth-form-button' disabled={loading}>

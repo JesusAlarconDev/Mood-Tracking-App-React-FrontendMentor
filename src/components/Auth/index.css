@@ -85,8 +85,31 @@
     display: flex;
 }
 
-.profile-container {
+.profile-container img {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
     margin-right: 20px;
+}
+
+.auth-upload-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.auth-upload-info label {
+    margin: 0;
+}
+
+.auth-upload-info p {
+    margin: 0;
+    font-size: 14px;
+    color: var(--neutral-600);
+}
+
+.auth-upload-info button {
+    margin-top: 4px;
 }
 
 @media (max-width: 680px) {
