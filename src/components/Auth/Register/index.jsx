@@ -5,6 +5,7 @@ import defaultProfile from '../../../assets/images/avatar-placeholder.svg' /* Im
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../context/AuthContext';
+import Loading from '../../Loading';
 
 const Register = () => {
     const [currentStep, setCurrentStep] = useState(1);
@@ -108,6 +109,7 @@ const Register = () => {
         }
     }
 
+
     const renderStep = () => {
         switch(currentStep){
             case 1:
@@ -154,39 +156,52 @@ const Register = () => {
                         <p className='auth-form-description'>Add your name and your profile picture to make Mood yours.</p>
 
                         <form onSubmit={handleSubmit}>
-                            {error && <p className='auth-form-error'>{error}</p>}
-                            <div className='auth-form-group'>
-                                <label htmlFor="name" className='auth-form-label'>Name</label>
-                                <input 
-                                    type="text" 
-                                    placeholder='john Doe' 
-                                    id="name" 
-                                    className='auth-form-input'
-                                    value={formData.name}
-                                    onChange={(e) => setFormData({...formData, name: e.target.value})}
-                                    />
-                            </div>
-                            <div className='auth-form-group profile-container'>
-                                <img src={profileImage ? profileImage : defaultProfile} alt="profile image" />
-                                <div className='auth-upload-info'>
-                                    <label htmlFor="name" className='auth-form-label'>Upload Image</label>
-                                    <p>Max 250KB, PNG o JPEG</p>
-                                    <input 
-                                        type="file" 
-                                        accept="image/png, image/jpeg" 
-                                        name="profilePicture"
-                                        onChange={handleImageChange}
-                                        style={{ display: 'none' }}
-                                        id="profilePictureInput"
-                                    />
-                                    <button 
-                                        type="button" 
-                                        onClick={() => document.getElementById('profilePictureInput').click()}
-                                    >
-                                        Upload
-                                    </button>
-                                </div>
-                            </div>
+                            {loading ? (<Loading />) : (
+                                <>
+                                    <div className='auth-form-group'>
+                                        <label htmlFor="name" className='auth-form-label'>Name</label>
+                                        <input 
+                                            type="text" 
+                                            placeholder='john Doe' 
+                                            id="name" 
+                                            className='auth-form-input'
+                                            value={formData.name}
+                                            onChange={(e) => setFormData({...formData, name: e.target.value})}
+                                        />
+                                    </div>
+                                    <div className='auth-form-group profile-container'>
+                                        <img src={profileImage ? profileImage : defaultProfile} alt="profile image" />
+                                        <div className='auth-upload-info'>
+                                            <label htmlFor="name" className='auth-form-label'>Upload Image</label>
+                                            <p>Max 250KB, PNG o JPEG</p>
+                                            <input 
+                                                type="file" 
+                                                accept="image/png, image/jpeg" 
+                                                name="profilePicture"
+                                                onChange={handleImageChange}
+                                                style={{ display: 'none' }}
+                                                id="profilePictureInput"
+                                            />
+                                            <button 
+                                                type="button" 
+                                                onClick={() => document.getElementById('profilePictureInput').click()}
+                                            >
+                                                Upload
+                                            </button>
+                                        </div>
+                                    </div>
+                                </>
+                            )}
+
+                            
+                            {error && (
+                                <ul className='auth-form-error'>
+                                    <li>
+                                        <p>{error}</p>
+                                    </li>
+                                </ul>
+                            )}
+
                             <button type='submit' className='auth-form-button' disabled={loading}>
                                 {loading ? 'Creating account...' : 'Start Tracking'}
                             </button>
@@ -196,13 +211,11 @@ const Register = () => {
             }
         };
 
-
-        
   return (
     <>
         <div className='auth-container'>
             <img src={logo} alt="logo" className='logo'/>
-
+            
             <div className='auth-form'>
                 {renderStep()}
             </div>

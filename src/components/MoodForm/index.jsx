@@ -1,9 +1,10 @@
+import { useState } from 'react'
 import veryHappy from '../../assets/images/icon-very-happy-color.svg'
 import happy from '../../assets/images/icon-happy-color.svg'
 import neutral from '../../assets/images/icon-neutral-color.svg'
 import sad from '../../assets/images/icon-sad-color.svg'
 import verySad from '../../assets/images/icon-very-sad-color.svg'
-import { useState } from 'react'
+import Loading from '../Loading'
 import './index.css';
 
 const MoodForm = ({showModal, closeModal}) => {
@@ -12,6 +13,7 @@ const MoodForm = ({showModal, closeModal}) => {
     const [currentStep, setCurrentStep] = useState(1);
     const [formData, setFormData] = useState(initialState);
     const [stepErrors, setStepErrors] = useState([]);
+    const [loading, setLoading] = useState(false);
 
     const validateStep = (step, data) => {
         switch(step){
@@ -94,6 +96,7 @@ const MoodForm = ({showModal, closeModal}) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setLoading(true);
 
         const errors = validateStep(4, formData);
         if (errors.length > 0) {
@@ -101,10 +104,6 @@ const MoodForm = ({showModal, closeModal}) => {
             return;
         }
         setStepErrors([]);
-
-        // const updatedRegisters = [...moodRegisters, formData];
-        // setMoodRegisters(updatedRegisters);
-        // localStorage.setItem("moodRegisters", JSON.stringify(updatedRegisters));
 
         try {
             const jwt_token = localStorage.getItem('userToken');
@@ -125,6 +124,8 @@ const MoodForm = ({showModal, closeModal}) => {
             }
         } catch (err) {
             console.error(err.message);
+        } finally {
+            setLoading(false);
         }
 
         setCurrentStep(1); 
@@ -338,32 +339,36 @@ const MoodForm = ({showModal, closeModal}) => {
             case 4:
                 return (
                     <>
-                        <h3>How many hours did you sleep last night?</h3>
+                        {loading ? (<Loading />) : (
+                        <>
+                            <h3>How many hours did you sleep last night?</h3>
 
-                        <label className="form-radio">
-                            <input type="radio" name="sleepHours" value="9+" checked={formData.sleepHours === "9+"} onChange={handleOnChange}/>
-                            <span>9+ hours</span>
-                        </label>
+                            <label className="form-radio">
+                                <input type="radio" name="sleepHours" value="9+" checked={formData.sleepHours === "9+"} onChange={handleOnChange}/>
+                                <span>9+ hours</span>
+                            </label>
 
-                        <label className="form-radio">
-                            <input type="radio" name="sleepHours" value="7-8" checked={formData.sleepHours === "7-8"} onChange={handleOnChange}/>
-                            <span>7-8 hours</span>
-                        </label>
+                            <label className="form-radio">
+                                <input type="radio" name="sleepHours" value="7-8" checked={formData.sleepHours === "7-8"} onChange={handleOnChange}/>
+                                <span>7-8 hours</span>
+                            </label>
 
-                        <label className="form-radio">
-                            <input type="radio" name="sleepHours" value="5-6" checked={formData.sleepHours === "5-6"} onChange={handleOnChange}/>
-                            <span>5-6 hours</span>
-                        </label>
+                            <label className="form-radio">
+                                <input type="radio" name="sleepHours" value="5-6" checked={formData.sleepHours === "5-6"} onChange={handleOnChange}/>
+                                <span>5-6 hours</span>
+                            </label>
 
-                        <label className="form-radio">
-                            <input type="radio" name="sleepHours" value="3-4" checked={formData.sleepHours === "3-4"} onChange={handleOnChange}/>
-                            <span>3-4 hours</span>
-                        </label>
+                            <label className="form-radio">
+                                <input type="radio" name="sleepHours" value="3-4" checked={formData.sleepHours === "3-4"} onChange={handleOnChange}/>
+                                <span>3-4 hours</span>
+                            </label>
 
-                        <label className="form-radio">
-                            <input type="radio" name="sleepHours" value="0-2" checked={formData.sleepHours === "0-2"} onChange={handleOnChange}/>
-                            <span>0-2 hours</span>
-                        </label>
+                            <label className="form-radio">
+                                <input type="radio" name="sleepHours" value="0-2" checked={formData.sleepHours === "0-2"} onChange={handleOnChange}/>
+                                <span>0-2 hours</span>
+                            </label>
+                        </>
+                        )}
 
                         {stepErrors.length > 0 && (
                             <div className="form-error" role="alert">
@@ -373,8 +378,8 @@ const MoodForm = ({showModal, closeModal}) => {
                             </div>
                         )}
 
-                        <button type="submit">
-                            Submit
+                        <button type="submit" disabled={loading}>
+                            {loading ? 'Submitting...' : 'Submit'}
                         </button>
                     </>
                 );

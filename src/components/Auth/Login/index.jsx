@@ -3,6 +3,7 @@ import '../../Auth/index.css'
 import logo from '../../../assets/images/logo.svg'
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../context/AuthContext';
+import Loading from '../../Loading';
 
 const Login = () => {
     const [formData, setFormData] = useState({
@@ -18,6 +19,7 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
+        setLoading(true);
 
         const LOGIN_URL = '/api/users/login'; 
 
@@ -56,16 +58,20 @@ const Login = () => {
         }
     }
 
-  return (
+    return (
     <>
         <div className='auth-container'>
             <img src={logo} alt="logo" className='logo'/>
-
+            
             <div className='auth-form'>
                 <h3 className='auth-form-title'>Welcome back!</h3>
                 <p className='auth-form-description'>Log in to continue tracking your mood and sleep.</p>
 
                 <form onSubmit={handleSubmit}>
+                {loading ? (
+                    <Loading />
+                ) : (
+                    <>
                     <div className='auth-form-group'>
                         <label htmlFor="email" className='auth-form-label'>Email Address</label>
                         <input 
@@ -93,8 +99,22 @@ const Login = () => {
                             })}
                         />
                     </div>
-                    <button type='submit' className='auth-form-button'>Log in</button>
-                </form>
+                    </>
+                )}
+
+
+                    {error && (
+                        <ul className='auth-form-error'>
+                            <li>
+                                <p>{error}</p>
+                            </li>
+                        </ul>
+                    )}
+                    
+                    <button type='submit' className='auth-form-button' disabled={loading}>
+                        {loading ? 'Logging in...' : 'Log in'}
+                    </button>
+                    </form>
 
                 <p className='auth-form-footer'>Haven't got an account? <Link to="/signup" className='auth-form-footer-link'>Sign up</Link></p>
             </div>

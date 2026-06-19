@@ -13,10 +13,12 @@ import { TodaysMood } from './TodaysMood/index';
 import { INITIAL_MOOD_REGISTERS } from '../constants/mockData';
 import { useAuth } from '../context/AuthContext';
 import SettingsModal from './SettingsModal';
+import Loading from './Loading';
 
 export const Home = () => {
     const [data, setData] = useState(null);
     const [moodRegisters, setMoodRegisters] = useState(INITIAL_MOOD_REGISTERS);
+    const [loading, setLoading] = useState(true);
 
     const { user, logout } = useAuth();
     const name = user?.name || "User";
@@ -25,6 +27,7 @@ export const Home = () => {
 
     useEffect(() => {
         const fetchMoodRegisters = async () => {
+            setLoading(true);
             try {
                 const jwt_token = localStorage.getItem('userToken');
                 if (!jwt_token) {
@@ -46,10 +49,9 @@ export const Home = () => {
                 setMoodRegisters(Array.isArray(data.moods) ? data.moods : []);
             } catch (err) {
                 console.error(err.message);
+            } finally {
+                setLoading(false);
             }
-            //  finally {
-            //     setLoading(false);
-            // }
         };
 
         fetchMoodRegisters();
@@ -100,8 +102,14 @@ export const Home = () => {
     const openSettings = () => setIsSettingsOpen(true);
     const closeSettings = () => setIsSettingsOpen(false);
 
-  return (
+
+    if(loading) {
+        return <Loading />;
+    }
+
+    return (
     <>
+        
         <header>
             <div className='head'>
                 <div className='head-logo'>
