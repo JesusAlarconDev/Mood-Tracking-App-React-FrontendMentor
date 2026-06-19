@@ -7,7 +7,7 @@ import verySad from '../../assets/images/icon-very-sad-color.svg'
 import Loading from '../Loading'
 import './index.css';
 
-const MoodForm = ({showModal, closeModal}) => {
+const MoodForm = ({showModal, closeModal, setData, moodRegisters, setMoodRegisters}) => {
     const initialState = {todaysMood: "", feelings: [], aboutYourDay: "", sleepHours: "", createdAt: new Date().toISOString()};
 
     const [currentStep, setCurrentStep] = useState(1);
@@ -122,6 +122,13 @@ const MoodForm = ({showModal, closeModal}) => {
             if (!response.ok) {
                 throw new Error('Error al crear el registro');
             }
+            
+            const data = await response.json();
+            const newMood = data.mood || data;
+            
+            // Actualizar el estado local con el nuevo registro
+            setMoodRegisters([...moodRegisters, newMood]);
+            setData(newMood);
         } catch (err) {
             console.error(err.message);
         } finally {

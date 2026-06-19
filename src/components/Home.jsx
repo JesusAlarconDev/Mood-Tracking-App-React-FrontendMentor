@@ -46,7 +46,9 @@ export const Home = () => {
                 }
 
                 const data = await response.json();
-                setMoodRegisters(Array.isArray(data.moods) ? data.moods : []);
+                const moods = Array.isArray(data.moods) ? data.moods : [];
+                // Ordenar por fecha ascendente (más antiguo primero)
+                setMoodRegisters(moods.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt)));
             } catch (err) {
                 console.error(err.message);
             } finally {
@@ -60,9 +62,11 @@ export const Home = () => {
     useEffect(() => {
         if(moodRegisters.length > 0){
             const lastRegister = moodRegisters[moodRegisters.length - 1];
-            const today = new Date().toISOString().split('T')[0];
-            const registerDate = new Date(lastRegister.createdAt).toISOString().split('T')[0];
-            if(registerDate === today){
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            const registerDate = new Date(lastRegister.createdAt);
+            registerDate.setHours(0, 0, 0, 0);
+            if(registerDate.getTime() === today.getTime()){
                 setData(lastRegister);
             } else {
                 setData(null);
