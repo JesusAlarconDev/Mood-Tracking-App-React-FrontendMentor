@@ -1,0 +1,24 @@
+.loading-container {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    justify-content: center;
+}
+
+.loading-mood {
+    width: 32px;
+    height: 32px;
+    opacity: 0;
+    animation: moodPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes moodPulse {
+    0%, 100% {
+        opacity: 0.3;
+        transform: scale(0.8);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.1);
+    }
+}
