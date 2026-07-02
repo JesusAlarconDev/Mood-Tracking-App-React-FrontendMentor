@@ -16,6 +16,8 @@ Mood Tracking App es un proyecto de FrontendMentor para rastrear tu estado de á
 - [Instalación](#-instalación)
 - [Uso](#-uso)
 - [Estructura del Proyecto](#-estructura-del-proyecto)
+- [Ramas del Proyecto](#-ramas-del-proyecto)
+- [Cambios de Versión](#-cambios-de-versión)
 - [Contribuciones](#-contribuciones)
 - [Licencia](#-licencia)
 
@@ -175,6 +177,85 @@ Mood-Tracking-App/
 ├── vite.config.js         # Configuración de Vite
 └── README.md
 ```
+
+## 🌿 Ramas del Proyecto
+
+El proyecto utiliza el siguiente flujo de trabajo con ramas:
+
+### Ramas Principales
+
+- **`main`**: Rama principal que contiene el código estable y listo para producción. Esta es la versión actual con autenticación completa y backend integrado.
+
+- **`local-storage`**: Rama que contiene la versión original de la aplicación que utilizaba localStorage para la persistencia de datos, sin autenticación ni backend.
+
+### Flujo de Trabajo
+
+1. **Desarrollo**: Crea una nueva rama desde `main` para desarrollar nuevas características
+   ```bash
+   git checkout -b feature/nueva-caracteristica
+   ```
+
+2. **Testing**: Realiza pruebas y commits en tu rama de feature
+
+3. **Merge**: Cuando esté listo, crea un Pull Request hacia `main`
+
+4. **Review**: El código es revisado antes de ser mergeado a main
+
+## 📈 Cambios de Versión
+
+### Versión Actual (Backend + Autenticación)
+
+La versión actual del proyecto incluye importantes mejoras en comparación con la versión original de localStorage:
+
+#### 🔐 Sistema de Autenticación
+- **Login**: Sistema de inicio de sesión con email y contraseña
+- **Registro**: Formulario de registro multi-paso con validación
+- **JWT**: Autenticación basada en tokens JSON Web Tokens
+- **Context API**: Gestión de estado de autenticación con React Context
+- **Rutas Protegidas**: Componente `AuthRoute` para proteger rutas que requieren autenticación
+
+#### 💾 Backend Integrado
+- **API REST**: Conexión completa con backend REST API
+- **Endpoints**:
+  - `POST /api/users/login`: Inicio de sesión
+  - `POST /api/users/register`: Registro de usuarios
+  - `GET /api/moods`: Obtener registros de estado de ánimo
+  - `POST /api/moods`: Crear nuevo registro de estado de ánimo
+- **Proxy Vite**: Configuración de proxy para desarrollo local
+- **Manejo de Errores**: Gestión robusta de errores de API
+
+#### 🖼️ Almacenamiento de Imágenes
+- **Cloudinary**: Servicio en la nube para almacenamiento y gestión de imágenes de perfil
+- **Subida de Imágenes**: Los usuarios pueden subir fotos de perfil personalizadas
+- **Validación**: Límite de 250KB y formatos PNG/JPEG
+- **URLs Optimizadas**: Cloudinary proporciona URLs optimizadas para las imágenes
+
+#### 🎨 Mejoras en UI/UX
+- **Perfil de Usuario**: Avatar personalizable con subida de imágenes
+- **Menú de Usuario**: Dropdown con opciones de configuración y logout
+- **Modal de Configuración**: Componente para ajustes de usuario
+- **Indicadores de Carga**: Componente `Loading` para mejor experiencia de usuario
+
+#### 🔧 Mejoras Técnicas
+- **Manejo de Fechas**: Corrección de problemas de zona horaria en comparación de fechas
+- **Ordenamiento Cronológico**: Ordenamiento automático de registros por fecha
+- **Actualización en Tiempo Real**: Los nuevos registros se actualizan inmediatamente sin recargar
+- **Validación de Formularios**: Validación robusta en frontend antes de enviar al backend
+
+#### 📊 Datos
+- **Persistencia en Servidor**: Los datos ahora se almacenan en el backend en lugar de localStorage
+- **Multiusuario**: Soporte para múltiples usuarios con sus propios registros
+- **Seguridad**: Las contraseñas se manejan de forma segura en el backend
+
+### Versión Anterior (LocalStorage)
+
+La versión original (`local-storage`) tenía las siguientes características:
+
+- **Persistencia Local**: Todos los datos se almacenaban en localStorage del navegador
+- **Sin Autenticación**: No requería login ni registro
+- **Datos Mock**: Utilizaba datos de prueba iniciales
+- **Usuario Único**: Diseñado para un solo usuario
+- **Sin Backend**: Funcionaba completamente en el frontend
 
 ## 🤝 Contribuciones
 
