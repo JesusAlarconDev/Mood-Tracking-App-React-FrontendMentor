@@ -49,7 +49,7 @@
     position: relative;
     display: flex;
     align-items: flex-end;
-    justify-content: space-around;
+    justify-content: flex-start;
     border-bottom: 1px solid #eee;
     padding-bottom: 40px;
     width: 100%;
@@ -166,7 +166,7 @@
 
 @media (max-width: 900px) {
     .mood-sleep-trends-container {
-        width: 89%;
+        width: 90%;
         margin: 20px auto;
     }
 }

@@ -1,5 +1,3 @@
-
-
 /* Styles for Today's Mood Container */
 
 .todays-mood-container {
@@ -116,7 +114,6 @@
 
 /* Media queries */
 
-
 @media (max-width: 1070px) {
     .todays-mood-container {
         flex-direction: column;
@@ -124,7 +121,8 @@
 
     .todays-mood-main{
         width: 90%;
-        height: 320px;
+        height: 320px; 
+        margin: 0; 
     }
 
     .todays-mood-main-aside {
@@ -139,7 +137,6 @@
     }
 
 }
-
 
 
 @media (max-width: 900px) {
@@ -158,6 +155,10 @@
         align-items: center;
         text-align: center;
     }
+/* 
+    .todays-mood-main .todays-mood-quote {
+        margin-top: 40px;
+    } */
 
     .todays-mood-main .mood-image{
         position: relative;
@@ -168,7 +169,7 @@
 
     .todays-mood-main-footer div {
         flex-direction: column;
-        top: 235px;
+        top: 255px;
         position: relative;
     }
 }
