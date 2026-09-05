@@ -155,16 +155,16 @@
         align-items: center;
         text-align: center;
     }
-/* 
-    .todays-mood-main .todays-mood-quote {
-        margin-top: 40px;
-    } */
 
     .todays-mood-main .mood-image{
         position: relative;
         top: -90px;
         width: 200px;
         height: 200px;
+    }
+
+    .todays-mood-main-footer {
+        margin-bottom: 40px;
     }
 
     .todays-mood-main-footer div {
